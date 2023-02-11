@@ -1,0 +1,274 @@
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+            Student
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <!-- [cModalToggle]="verticallyCenteredModal.id" (click)="createBatches()"  -->
+          <button cButton class="float-end" color="primary" [cModalToggle]="modalXl.id"
+          (click)="resetForm()">
+            +Add new Student
+          </button>
+        </c-col>
+  
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+      <h3>Search</h3>
+      <form>
+  
+         <table borderless cTable hover>
+          <tbody>
+            <tr>
+             
+              <td>
+                <input cFormControl id="inputPassword2"
+                  placeholder="Student name, Email, Contact no and Guardian contact no." type="text" />
+              </td>
+              <td>
+                <select cSelect class="form-control">
+                  <option [disabled]="true" [selected]="true">Batch time</option>
+                  <option value="">5:00Am to 6:00Am</option>
+                  <option value="">6:00Am to 7:00Am</option>
+                  <option value="">7:00Am to 8:00Am</option>
+                  <option value="">8:00Am to 9:00Am</option>
+                  <option value="">10:00Am to 11:00Am</option>
+                </select>
+              </td>
+              <td> <select cSelect class="form-control">
+                  <option [disabled]="true" [selected]="true">Admission For</option>
+                  <option value="">6th</option>
+                  <option value="">7th</option>
+                  <option value="">8th</option>
+                  <option value="">9th</option>
+                  <option value="">10</option>
+                </select></td>
+              <td>
+                <select cSelect class="form-control">
+                  <option [disabled]="true" [selected]="true">Select Session</option>
+                  <option value="">2022-2023</option>
+                  <option value="">2021-2022</option>
+                  <option value="">2020-2021</option>
+                  <option value="">2019-2020</option>
+                </select>
+              </td>
+            </tr>
+  
+            <tr>
+              <td><button cButton color="info">Search</button>
+                <button cButton color="light">Cancel</button>
+              </td>
+              <td> </td>
+            </tr>
+          </tbody>
+        </table> 
+     
+      </form>
+      <!-- <button cButton color="info" size="lg">+Add New Student</button> -->
+  
+      <table [striped]="true" cTable>
+        <thead>
+          <tr>
+            <th scope="col">Sl.</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Chat</th>
+            <th scope="col">Gender </th>
+            <th scope="col">Session </th>
+            <th scope="col">Batch Timing </th>
+            <th scope="col">Class </th>
+            <th scope="col">Exam Seating </th>
+            <th scope="col">Department </th>
+            <th scope="col">Reg No </th>
+            <th scope="col">Received Fee </th>
+            <th scope="col">Payment Term </th>
+            <th scope="col">Status </th>
+            <th scope="col">Action </th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let item of details">
+            <th scope="row">{{item.id}}</th>
+            <td><img src="{{item.photo}}" width="60" height="80" priority></td>
+            <td>{{item.name}}</td>
+            <td>{{item.mobilename}}</td>
+            <td>{{item.chat}}</td>
+            <td>{{item.gender }}</td>
+            <td>{{item.session }}</td>
+            <td>{{item.batchTime }}</td>
+            <td>{{item.class}}</td>
+            <td>{{item.examSeating }}</td>
+            <td>{{item.department }}</td>
+            <td>{{item.regNo }}</td>
+            <td>{{item.recieveFee }}</td>
+            <td>{{item.paymentTerm }}</td>
+            <td>{{item.status }}</td>
+            <td>
+              <button cButton color="warning" [cModalToggle]="modalXl.id" 
+              (click)="edit(item)" >Edit</button>
+              <button cButton color="success">View Detail</button>
+              <button cButton color="danger">Delete</button>
+            </td>
+  
+          </tr>
+        </tbody>
+      </table>
+    </c-card-body>
+  </c-card>
+  
+  
+  
+  
+  
+  <!-- Modal for Add New Student -->
+  
+  <c-modal #modalXl alignment="center" id="modalXl" size="lg">
+    <c-modal-header>
+      <h5 cModalTitle>Add new Student Details</h5>
+      <button [cModalToggle]="modalXl .id" cButtonClose></button>
+    </c-modal-header>
+  
+    <c-modal-body>
+      <!--  -->
+      <form [formGroup]="formReactive" >
+  
+        <table borderless cTable>
+          <tbody>
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlName">Name</label><br>
+                  <input cFormControl id="exampleFormControlName" placeholder="Enter your Name " type="text" formControlName='name' />
+                </div>
+              </td>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlPhoto">Photo</label><br>
+                  <input cFormControl id="exampleFormControlPhoto" placeholder="photo " type="file" formControlName='photo' />
+                </div>
+              </td>
+  
+            </tr>
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlMobileNmae">Mobile Number</label><br>
+                  <input cFormControl id="exampleFormControlMobileNmae" 
+                  placeholder="Enter Your Mobile " type="number"
+                    formControlName='mobilename' />
+                </div>
+              </td>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlChat">chat</label><br>
+                  <input cFormControl id="exampleFormControlChat" placeholder="Enter Chat Link " type="text" formControlName='chat' />
+                </div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlGender">Gender</label><br>
+                  <select  cSelect id="exampleFormControlGender" class="form-control" formControlName='gender'>
+                    <option [disabled]="true" [selected]="true">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlSession">Session</label><br>
+                  <input cFormControl id="exampleFormControlSession" placeholder="Enter Session" type="text" formControlName='session' />
+                </div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlBatchtime">Batch Timing</label><br>
+                  <input cFormControl id="exampleFormControlBatchtime" placeholder="Enter Batch Time" type="text"
+                    formControlName='batchTime' />
+                </div>
+              </td>
+              <td>
+                <!-- <div class="mb-3">
+                  <label cLabel for="exampleFormControlClass">Class</label><br>
+                  <input cFormControl id="exampleFormControlClass" placeholder="Enter Class " type="text" formControlName='class' />
+                </div> -->
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlclass">Class</label><br>
+                  <select cSelect id="exampleFormControlclass" class="form-control" formControlName='class'  >
+                    <option [selected]="true">Select</option>
+                    <option  *ngFor="let classlist of classes" [value]="classlist._id"  >{{classlist.class_name}}</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlExamseat">Exam Seating</label><br>
+                  <input cFormControl id="exampleFormControlExamseat" placeholder="Enter Exam Seating " type="text" formControlName='examSeating' />
+                </div>
+              </td>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlDepartment">Department</label><br>
+                  <input cFormControl id="exampleFormControlDepartment" placeholder="Enter Department " type="text"
+                    formControlName='department' />
+                </div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlRecieve">Received Fee</label><br>
+                  <input cFormControl id="exampleFormControlRecieve" placeholder="Enter Fee " type="text"
+                    formControlName='recieveFee' />
+                </div>
+              </td>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlPaymentTerm">Payment Term</label><br>
+                  <input cFormControl id="exampleFormControlPaymentTerm" placeholder="Enter Payment Term " type="text"
+                    formControlName='paymentTerm' />
+                </div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlStatus">Status</label><br>
+                  <select cSelect id="exampleFormControlStatus" class="form-control" formControlName='status'>
+                    <option [disabled]="true" [selected]="true">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <c-modal-footer>
+          <button [cModalToggle]="modalXl.id" cButton color="secondary">
+            Close
+          </button>
+          <!-- [cModalToggle]="modalXl.id" -->
+          <button [cModalToggle]="modalXl.id" (click)="onSubmit()"  cButton  color="primary">Done</button>
+        </c-modal-footer>
+      </form>
+    </c-modal-body>
+  </c-modal>
+  

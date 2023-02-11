@@ -1,0 +1,39 @@
+<c-card-body>
+    <h3>Chat</h3>
+  <!-- <button cButton color="info" size="lg">+Add New Student</button> -->
+
+    <table [striped]="true" cTable>
+      <thead>
+        <tr>
+          <th scope="col">Sl.</th>
+          <th scope="col">Image.</th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Contact No.</th>
+          <!-- <th scope="col">No. of Chat</th>
+          <th scope="col">New Chat </th> -->
+          <th scope="col">Action </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of chatList; let i=index">
+          <th scope="row">{{i+1}}</th>
+          <td><img src="{{item.studentInfo[0]?.student_photo}}" width="60" height="80" priority></td>
+          <td>{{item.studentInfo[0]?.name}}</td>
+          <td>{{item.studentInfo[0]?.mobile_number}}</td>
+          <!-- <td>{{item.no_of_chat }}</td>
+          <td>{{item.new_chat }}</td> -->
+          <td>
+            <!-- <button cButton color="warning" [cModalToggle]="modalXl.id" 
+            (click)="edit(item)" >Edit</button> -->
+            <button cButton color="success" (click)="chatBox(item)">Reply</button>
+            <!-- <button cButton color="danger">Delete</button> -->
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+     <!-- <svg cIcon name="cil-arrow-thick-right" title="" size="3xl"></svg> -->
+   
+
+  </c-card-body>

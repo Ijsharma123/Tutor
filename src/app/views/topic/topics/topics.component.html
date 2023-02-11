@@ -1,0 +1,216 @@
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+           Topic
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <button [cModalToggle]="verticallyCenteredModal.id" cButton class="float-end" color="primary" (click)="createNew()"
+           >
+           +Create New
+          </button>
+       </c-col>
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+        <table [striped]="true" cTable>
+            <thead>
+            <tr>
+            <th scope="col">S.no</th>
+            <th scope="col"> Chapter Name</th>
+            <th scope="col">Class</th>
+            <th scope="col">Subject</th>
+            <th scope="col">topic_name</th>
+            <th scope="col">PDF</th>
+            <th scope="col">Video</th>
+
+            <th scope="col">Status</th>
+             <th scope="col">Action</th>
+        </tr>
+            </thead>
+          
+            <tbody>
+            <tr *ngFor="let list of listData; let i=index">
+             <td>{{i+1}}</td>
+            <td>{{list.chapter_name}}</td>
+            <td>{{list.class_name}}</td>
+            <td>{{list.subject_name}}</td>
+            <td>{{list.topic_name}}</td>
+            <td>
+              <a [href]="list.upload_pdf" target="_blank">View</a> 
+            </td>
+            <td> <a [href]="list.upload_video" target="_blank">View</a> 
+              <br />
+              <a *ngIf="list.upload_video == ''" [cModalToggle]="addVdo.id" href="#" target="_blank" (click)="listId(list)">Add Vdo</a>
+<!-- list.upload_video -->
+              <a *ngIf="list.upload_video !== ''" [cModalToggle]="vdoD.id" href="#" (click)="deletevdo(list)"target="_blank">Delete Vdo</a>
+            </td>
+             <td>{{list.status}}</td>
+            <td>
+                <button color="warning"  [cModalToggle]="verticallyCenteredModal.id" cButton (click)="edit(list)" >Edit</button>
+                <button cButton [cModalToggle]="delete.id" (click)="deleteId(list)" >Delete</button>
+            </td>
+            <!-- <td> <button color="warning"  [cModalToggle]="addVdo.id" cButton >Add Video</button></td>
+            <td>Delete Video</td> -->
+            </tr>
+            </tbody>
+            </table>
+            <c-spinner class="spinner" *ngIf="loader " ></c-spinner>
+    </c-card-body>
+</c-card>
+
+
+
+<!-- Modal of Create New User -->
+
+
+<c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal">
+    <c-modal-header>
+      <h5 cModalTitle>Topic</h5>
+      <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose (click)="close()"></button>
+    </c-modal-header>
+
+    <c-modal-body>
+      <!-- (ngSubmit)="onSubmit()" -->
+      <form [formGroup]="form" >
+        <div class="mb-3">
+          <label cLabel for="exampleFormControlclass">Class</label><br>
+          <select cSelect id="exampleFormControlclass" class="form-control" formControlName='class' (change)="onSelected()" >
+            <option  [selected]="true">Select</option>
+            <option  *ngFor="let classlist of classes" [value]="classlist._id"  >{{classlist.class_name}}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label cLabel for="exampleFormControlSubject">Subject</label><br>
+          <select cSelect id="exampleFormControlSubject" class="form-control" formControlName='Subject' (change)="onSelectedSubject()">
+            <option [disabled]="true"  [selected]="true">Select Subject</option>
+            <option  *ngFor="let subject of subjectData" [value]="subject._id">{{subject.name
+            }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label cLabel for="exampleFormControlchapter">Chapter</label><br>
+          <select cSelect id="exampleFormControlchapter" class="form-control" formControlName='chapter'>
+            <option [disabled]="true" [selected]="true">Select Chapter</option>
+            <option  *ngFor="let list of chapters" [value]="list._id
+            ">{{list.chapter_title}}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label cLabel for="exampleFormControlInput1">Topic's Name</label><br>
+          <input cFormControl id="exampleFormControlInput1"
+                     placeholder="Enter Topic Name"
+                     type="text"
+                     formControlName='name' />
+          </div>
+
+        <!-- <div class="mb-3">
+          <label cLabel for="exampleFormControlSubjectvdo">Upload Video</label><br>
+          <input cFormControl id="exampleFormControlSubjectvdo"
+                     type="text"  
+                     formControlName='uploadvdo' />
+          </div> -->
+          <div class="mb-3">
+            <label cLabel for="exampleFormControlSubjectpdf">Upload PDF</label><br>
+            <input cFormControl id="exampleFormControlSubjectpdf"
+                       type="file" (change)="onFileChangePdf($event)" 
+                       formControlName='uploadpdf' />
+            </div>
+
+         
+
+                    <div class="mb-3">
+                        <label cLabel for="exampleFormControlStatus">Status</label><br>
+                        <select cSelect id="exampleFormControlStatus" class="form-control" formControlName='status'>
+                          <option [disabled]="true" [selected]="true">Select Status</option>
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      </div>
+                    
+                    <c-modal-footer>
+                      <button [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary" (click)="close()">
+                        Close
+                      </button>
+                      <button *ngIf="!isedit" [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary" (click)="saveNewData()" >Done</button>
+                      <button [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary"
+                          *ngIf="isedit" (click)="saveEditData()"  >Edit</button>
+                    </c-modal-footer>
+          </form>
+    </c-modal-body>
+  </c-modal> 
+
+
+   <!-- delete all list modal -->
+<c-modal #delete alignment="center" id="delete">
+  <c-modal-header>
+    <h5 cModalTitle>Delete!</h5>
+    <button [cModalToggle]="delete.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    Woohoo, you are Deleting this Topic .
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="delete.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="delete1()" [cModalToggle]="delete.id">Delete</button>
+  </c-modal-footer>
+</c-modal>
+
+
+
+ <!-- delete vdo modal -->
+ <c-modal #vdoD alignment="center" id="vdoD">
+  <c-modal-header>
+    <h5 cModalTitle>Delete!</h5>
+    <button [cModalToggle]="vdoD.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    Woohoo, you are Deleting this Vdo .
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="vdoD.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="deleteVdeos()" [cModalToggle]="vdoD.id">Delete</button>
+  </c-modal-footer>
+</c-modal>
+
+
+   <!-- add Video Form modal -->
+<c-modal #addVdo alignment="center" id="addVdo">
+  <c-modal-header>
+    <h5 cModalTitle>Add vdo </h5>
+    <button [cModalToggle]="addVdo.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <form #f1="ngForm" >
+
+            <div class="mb-3">
+              <label cLabel for="exampleFormControlvdo1">Upload Video</label><br>
+              <input cFormControl (change)="onFileChangeVideo($event)"  type="file" name="vdo" ngModel #vdo="ngModel" placeholder="Upload Video" required>
+              </div>
+
+            <div color="danger" *ngIf="!vdo.valid && vdo.touched">
+              <p class="errorMsg">Please enter your Name</p>
+            </div>
+            <c-modal-footer>
+              <button [cModalToggle]="addVdo.id" cButton color="secondary">
+                Close
+              </button>
+              <!-- expand="full block" -->
+              <button cButton (click)="onSubmit(f1)" color="primary" [disabled]="!f1.valid"  [cModalToggle]="addVdo.id" >
+                Save
+              </button>
+            </c-modal-footer>
+            </form>
+            
+  </c-modal-body>
+
+</c-modal>

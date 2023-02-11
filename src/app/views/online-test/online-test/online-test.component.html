@@ -1,0 +1,204 @@
+
+
+
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+           Questions
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <button [cModalToggle]="verticallyCenteredModal.id" cButton class="float-end" color="primary" 
+          (click)="create()" >
+           + Add Question
+          </button>
+       </c-col>
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+
+      <c-spinner *ngIf="setdata.length == 0"></c-spinner>
+
+      <h3 >Select SetList</h3>
+      <form >
+  
+         <table borderless cTable hover >
+          <tbody>
+            <tr>
+             
+              <td>
+                 <!-- [(ngModel)]="setid" (change)="onSelectedSubject()" -->
+                <select cSelect class="form-control"   (change)="selectChangeHandler($event)">
+                  <option [disabled]="true" [selected]="true">Select SetList</option>
+                  <option  *ngFor="let list of setdata" [value]="list._id">{{list.qps_title}},  Sub-{{list.subject_name}}, Class {{list.class_name}}</option>
+                </select>
+              </td>
+            
+            </tr>
+  
+            <tr>
+            </tr>
+          </tbody>
+        </table> 
+      </form>
+
+      <div *ngIf="!setid">
+        <h2>No question List avilable, Please Select setList  </h2>
+      </div>
+
+      <div *ngIf="setid">
+        <table [striped]="true" cTable>
+            <thead>
+            <tr>
+                <th scope="col">S.No.</th>
+            <th scope="col">Question</th>
+            <!-- <th scope="col">Set</th> -->
+            <th scope="col">Class</th>
+            <!-- <th scope="col">Langauage</th> -->
+            <!-- <th scope="col">Status</th> -->
+             <th scope="col">Action</th>
+        </tr>
+            </thead>
+            <tbody>
+            <!-- <tr *ngFor="let list of data; let i= index">
+                <td>{{i+1}}</td>
+            <td>{{list.question}}</td>
+             <td>{{list.set}}</td>
+             <td>{{list.class}}</td>
+             <td>{{list.language}}</td>
+            <td> -->
+              <tr *ngFor="let list of questionlists?.result.result; let i= index">
+                <td>{{i+1}}</td>
+            <td>{{list?.question}}</td>
+             <!-- <td>{{list?.set}}</td> -->
+             <td>{{questionlists.class.class_name}}</td>
+             <!-- <td>{{list?.result[0]?.qps_language}}</td> -->
+             <!-- <td>{{questionlists.result?.qps_status}}</td> -->
+            <td>
+                <button color="warning"  [cModalToggle]="verticallyCenteredModal.id" cButton (click)="edit(list)" >Edit</button>
+                <button cButton [cModalToggle]="delete.id" (click)="deleteId(list)"  >delete</button>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            <c-spinner class="spinner" *ngIf="questionlists?.result.result <= 1 || selectData" ></c-spinner>
+     </div>
+    </c-card-body>
+</c-card>
+
+
+
+<!-- Modal of Create New User -->
+
+
+<c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal">
+    <c-modal-header>
+      <h5 *ngIf="!isedit" cModalTitle>Create Question</h5>
+      <h5 *ngIf="isedit" cModalTitle>Edit Question</h5>
+      <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose></button>
+    </c-modal-header>
+
+    <c-modal-body>
+      <!-- (ngSubmit)="onSubmit()" -->
+      <form [formGroup]="form" >
+        <div class="mb-3">
+            <label cLabel for="exampleFormControlSet">Set</label><br>
+            <select cSelect id="exampleFormControlSet" class="form-control" formControlName='set'>
+              <option [disabled]="true" [selected]="true">Select</option>
+              <option  *ngFor="let list of setList"  [value]="list._id"> {{list.qps_title}} </option>
+              <!-- <option value="Inactive">Test-1</option>
+              <option value="Active">Biology-ix- Test-3</option>
+              <option value="Inactive">Chemestry Selelction</option> -->
+            </select>
+          </div>
+
+          <!-- <div class="mb-3">
+            <label cLabel for="exampleFormControlType">Type</label><br>
+            <select cSelect id="exampleFormControlType" class="form-control" formControlName='type'>
+              <option [disabled]="true" [selected]="true">Select</option>
+              <option value="Active">Single Section</option>
+            </select>
+          </div> -->
+
+          <div class="mb-3">
+          <label cLabel for="exampleFormControlQuestion">Question</label><br>
+          <input cFormControl id="exampleFormControlQuestion"
+                     placeholder=""
+                     type="text"
+                     formControlName='question' />
+          </div>
+
+
+
+                <div class="mb-3">
+                    <label cLabel for="exampleFormControOption">Option 1</label><br>
+                    <input cFormControl id="exampleFormControOption"
+                               placeholder=""
+                               type="text"
+                               formControlName='option1' />
+                    </div>
+                    <div class="mb-3">
+                        <label cLabel for="exampleFormControOption2">Option 2</label><br>
+                        <input cFormControl id="exampleFormControOption2"
+                                   placeholder=""
+                                   type="text"
+                                   formControlName='option2' />
+                        </div>
+                        <div class="mb-3">
+                            <label cLabel for="exampleFormControOption3">Option 3</label><br>
+                            <input cFormControl id="exampleFormControOption3"
+                                       placeholder=""
+                                       type="text"
+                                       formControlName='option3' />
+                            </div>
+                            <div class="mb-3">
+                                <label cLabel for="exampleFormControOption4">Option 4</label><br>
+                                <input cFormControl id="exampleFormControOption4"
+                                           placeholder=""
+                                           type="text"
+                                           formControlName='option4' />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label cLabel for="exampleFormControlAnswer">Right Option</label><br>
+                                    <select cSelect id="exampleFormControlAnswer" class="form-control" formControlName='answer'>
+                                      <option [disabled]="true" [selected]="true">Select</option>
+                                      <option value="0"> Option 1 </option>
+                                      <option value="1">Option 2</option>
+                                      <option value="2">Option 3</option>
+                                      <option value="3">Option 4</option>
+                                    </select>
+                                  </div>
+  
+
+                    
+                    <c-modal-footer>
+                      <button [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary">
+                        Close
+                      </button>
+                      <button  *ngIf="!isedit" [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary" (click)="saveNewData()" >Done</button>
+                      <button [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary"
+                          *ngIf="isedit" (click)="saveEditData()"  >Edit</button>
+                    </c-modal-footer>
+          </form>
+    </c-modal-body>
+  </c-modal> 
+
+    <!-- delete modal -->
+<c-modal #delete alignment="center" id="delete">
+  <c-modal-header>
+    <h5 cModalTitle>Delete!</h5>
+    <button [cModalToggle]="delete.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    Woohoo, you are Deleting this Question List .
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="delete.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="delete1()" [cModalToggle]="delete.id">Delete</button>
+  </c-modal-footer>
+</c-modal>

@@ -1,0 +1,56 @@
+<!-- Toolbar -->
+<div class="content" role="main">
+    
+    <div  class="container">
+      <h3 class=" text-center">Chat box Messaging</h3>
+      <div class="mesgs">
+        <div class="msg_history">
+          <li class="message" *ngFor="let list of chatList">
+            <div #incoming_msg *ngIf="list.isAdmin == false">
+              <div class="incoming_msg">
+                <div class="incoming_msg_img">
+                  <img
+                    src="https://i.imgur.com/k2PZLZa.png"
+                    alt="User avatar"
+                  />
+                </div>
+                <div class="received_msg">
+                  <div class="received_withd_msg" >
+                    <!-- <p>hi vikash</p> -->
+                    <p>{{list.message}}</p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div #outgoing_msg *ngIf="list.isAdmin == true"> 
+              <div class="outgoing_msg">
+                <div class="sent_msg">
+                    <p>{{list.message}}</p>
+                  <!-- <p>hi vikash</p> -->
+                </div>
+              </div>
+            </div>
+          </li>
+        </div>
+        <div class="type_msg">
+            <!-- (ngSubmit)="sendMessage()" -->
+          <form [formGroup]="form" class="input_msg_write"  >
+            <input
+              type="text"
+              class="write_msg"
+              placeholder="Type a message"
+              name="newMessage"  formControlName='newMessage'
+              
+            />
+            <button class="msg_send_btn" type="button" (click)="sendMessage()">
+                <svg cIcon name="cil-cursor" title="cil-cursor" size="2.5xl"></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>

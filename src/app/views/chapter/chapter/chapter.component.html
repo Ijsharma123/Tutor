@@ -1,0 +1,210 @@
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+            Chapter
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <!-- [cModalToggle]="verticallyCenteredModal.id" (click)="createBatches()"  -->
+          <button cButton class="float-end" color="primary" [cModalToggle]="verticallyCenteredModal.id"
+          (click)="resetForm()">
+            +Create New
+          </button>
+        </c-col>
+  
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+      <h3>Search</h3>
+      <form>
+  
+         <table borderless cTable hover>
+          <tbody>
+            <tr>
+             
+              <td>
+                <input cFormControl id="inputPassword2"
+                  placeholder="Chapter title" type="text" />
+              </td>
+             
+              <td>
+                 
+                <select cSelect class="form-control" >
+                  <option [disabled]="true" [selected]="true">Select Class</option>
+                  <option  *ngFor="let class of classes" [value]="class._id">{{class.class_name}}</option>
+                </select>
+              </td>
+            
+            </tr>
+  
+            <tr>
+              <td><button cButton color="info">Search</button>
+                <button cButton color="light">Cancel</button>
+              </td>
+              <td> </td>
+            </tr>
+          </tbody>
+        </table> 
+      </form>
+<!-- <br> -->
+<c-spinner class="spinner" *ngIf="loader " ></c-spinner>
+<table [striped]="true" cTable>
+    <thead>
+    <tr>
+      <th scope="col">S.NO</th>
+    <th scope="col">Chapter Title</th>
+    <th scope="col">Class</th>
+    <th scope="col">Subject</th>
+    <th scope="col">Language</th>
+    <!-- <th scope="col">Total Topics</th> -->
+    <th scope="col">Status</th>
+     <th scope="col">Action</th>
+</tr>
+
+    </thead>
+    <tbody>
+    <tr *ngFor="let list of data; let i=index">
+      <td>{{i+1}}</td>
+    <td>{{list.chapter_title}}</td>
+    <td>{{list.class_name}}</td>
+    <td>{{list.subject_name}}</td>
+    <td>{{list.language}}</td>
+    <!-- <td>{{list.total_topics}}</td> -->
+     <td>{{list.status}}</td>
+    <td>
+        <button color="warning"  [cModalToggle]="verticallyCenteredModal.id" cButton (click)="edit(list)" >Edit</button>
+        <button cButton [cModalToggle]="delete.id" (click)="deleteId(list)"  >delete</button>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+
+      </c-card-body>
+      </c-card>
+
+
+
+      <!-- modal -->
+
+      <c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal">
+        <c-modal-header>
+          <h5 cModalTitle>Chapter</h5>
+          <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose></button>
+        </c-modal-header>
+    
+        <c-modal-body>
+          <!-- (ngSubmit)="onSubmit()" -->
+          <form [formGroup]="form" >
+            
+    
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlClass">Class</label><br>
+                <input cFormControl id="exampleFormControlClass"
+                           placeholder="Enter Class Name"
+                           type="text"
+                           formControlName='class' />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                  <label cLabel for="exampleFormControlClass">Class</label><br>
+                  <select cSelect id="exampleFormControlClass" class="form-control" formControlName='class'>
+                    <option [disabled]="true" [selected]="true">Select</option>
+                    <option value="6">6th</option>
+                    <option value="7">7th</option>
+                    <option value="8">8th</option>
+                    <option value="9">9th</option>
+                  </select>
+                </div> -->
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlclass">Class</label><br>
+                  <select cSelect id="exampleFormControlclass" class="form-control" formControlName='class' (change)="onSelected()" >
+                    <option  [selected]="true">Select</option>
+                    <option  *ngFor="let classlist of classes" [value]="classlist._id"  >{{classlist.class_name}}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlSubject">Subject</label><br>
+                  <select cSelect id="exampleFormControlSubject" class="form-control" formControlName='Subject'>
+                    <option [disabled]="true" [selected]="true">Select Class</option>
+                    <option  *ngFor="let subject of subjectData" [value]="subject._id">{{subject.name}}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="exampleFormControlSubjectName">Chapter Title</label><br>
+                  <input cFormControl id="exampleFormControlSubjectName"
+                             placeholder="Enter Chapter Title Name"
+                             type="text"
+                             formControlName='chapterTitle' />
+                  </div>
+
+    
+                    <div class="mb-3">
+                      <label cLabel for="exampleFormControlBoard">Board</label><br>
+                      <select cSelect id="exampleFormControlBoard" class="form-control" formControlName='board'>
+                        <option [disabled]="true" [selected]="true">Select</option>
+                        <option value="CBSE">CBSE</option>
+                        <option value="BSEB">BSEB</option>
+                      </select>
+                    </div>
+
+                        <div class="mb-3">
+                          <label cLabel for="exampleFormControllanguage">Language</label><br>
+                          <select cSelect id="exampleFormControllanguage" class="form-control" formControlName='language'>
+                            <option [disabled]="true" [selected]="true">Select</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="English">English</option>
+                          </select>
+                        </div>
+
+                        <!-- <div class="mb-3">
+                            <label cLabel for="exampleFormControltotalTopics">Total Topics</label><br>
+                            <input cFormControl id="exampleFormControltotalTopics"
+                                       placeholder="Enter Total Topics"
+                                       type="number"
+                                       formControlName='totalTopics' />
+                            </div> -->
+    
+                        <div class="mb-3">
+                            <label cLabel for="exampleFormControlStatus">Status</label><br>
+                            <select cSelect id="exampleFormControlStatus" class="form-control" formControlName='status'>
+                              <option [disabled]="true" [selected]="true">Select Status</option>
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Inactive</option>
+                            </select>
+                          </div>
+                        
+                        <c-modal-footer>
+                          <button [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary">
+                            Close
+                          </button>
+                          <button  *ngIf="!isedit" [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary" (click)="saveNewData()" >Done</button>
+                          <button [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary"
+                          *ngIf="isedit" (click)="saveEditData()"  >Edit</button>
+                        </c-modal-footer>
+              </form>
+        </c-modal-body>
+      </c-modal> 
+
+
+
+      
+      <!-- delete modal -->
+<c-modal #delete alignment="center" id="delete">
+  <c-modal-header>
+    <h5 cModalTitle>Delete!</h5>
+    <button [cModalToggle]="delete.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    Woohoo, you are Deleting this Set .
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="delete.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="delete1()" [cModalToggle]="delete.id">Delete</button>
+  </c-modal-footer>
+</c-modal>

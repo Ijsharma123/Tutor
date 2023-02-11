@@ -1,0 +1,119 @@
+<c-card class="mb-4">
+  <c-card-header>
+    <c-row>
+      <c-col sm="5">
+        <h4 class="card-title mb-0" id="traffic">
+          Slider 
+          <!-- <button (click)="removeStorage()">removeStorage</button> -->
+        </h4>
+      </c-col>
+      <c-col class="d-none d-md-block" sm="7">
+        <button [cModalToggle]="verticallyCenteredModal.id" cButton class="float-end" color="primary" (click)="addModal()">
+         Add Banner
+        </button>
+     </c-col>
+    </c-row>
+  </c-card-header>
+  <c-card-body>
+   
+
+  
+    <table cTable>
+      <c-spinner class="spinner" *ngIf="loader " ></c-spinner>
+      <thead>
+      <tr>
+      <th scope="col">S.N.</th>
+      <th scope="col">Title</th>
+      <th scope="col">Image</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+  
+      <tr *ngFor="let list of bannerList let i = index; ">
+      <th scope="row">{{i+1}}</th>
+      <td>{{list?.banner_title}}   </td>
+      <td><img [src]="list?.banner_image" /></td>
+      <td>{{list?.banner_status}}</td>
+      <td><button [cModalToggle]="verticallyCenteredModal.id" (click)="edit(list)" cButton>Edit</button> &nbsp; <button cButton color="primary" (click)="deleteModal(list)" [cModalToggle]="delete.id">Delete</button>
+      </td>
+      </tr>
+      </tbody>
+      </table> 
+
+  </c-card-body>
+</c-card>
+
+
+
+
+    <!-- <button [cModalToggle]="verticallyCenteredModal.id" cButton>Centered modal</button> -->
+
+     <c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal">
+      <c-modal-header>
+        <h5 *ngIf="!isedit" cModalTitle>Add Bannner</h5>
+        <h5 *ngIf="isedit" cModalTitle>Edit Bannner</h5>
+        <button [cModalToggle]="verticallyCenteredModal.id"
+        (click)="initForm()" cButtonClose></button>
+      </c-modal-header>
+      <c-modal-body>
+        
+        <form cForm [formGroup]="form">
+            <div class="mb-3">
+            <label cLabel for="exampleFormControlInput1">Title</label>
+            <input cFormControl
+                       id="exampleFormControlInput1"
+                       placeholder="Please Enter Banner title"
+                       type="text"
+                       formControlName='title'
+                />
+            </div>
+            <div class="mb-3">
+            <label cLabel for="exampleFormControlTextarea1">Image</label>
+            <input cFormControl id="exampleFormControlTextarea1"
+               type="file" (change)="onFileChange($event)" name="image"
+                rows="3" 
+                formControlName='image'/>
+            </div>
+
+            <div class="mb-3">
+              <label cLabel for="exampleFormControlStatus1">Status</label><br>
+              <select cSelect id="exampleFormControlStatus1" class="form-control" formControlName='status'>
+                <option [disabled]="true" [selected]="true">Select Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+
+            </form>
+      </c-modal-body>
+      <c-modal-footer>
+        <button [cModalToggle]="verticallyCenteredModal.id" cButton 
+        (click)="initForm()" color="secondary">
+          Close
+        </button>
+        <button [cModalToggle]="verticallyCenteredModal.id" cButton *ngIf="!isedit" cButton (click)="addBanner()" color="primary">Done</button>
+
+        <button [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary"
+        *ngIf="isedit" (click)="saveEditData()"  >Edit</button>
+      </c-modal-footer>
+    </c-modal> 
+
+
+     <!-- delete modal -->
+<c-modal #delete alignment="center" id="delete">
+  <c-modal-header>
+    <h5 cModalTitle>Delete!</h5>
+    <button [cModalToggle]="delete.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    Woohoo, you are Deleting this Set .
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="delete.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="delete1()" [cModalToggle]="delete.id">Delete</button>
+  </c-modal-footer>
+</c-modal>

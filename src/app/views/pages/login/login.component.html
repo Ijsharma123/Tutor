@@ -1,0 +1,75 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center loginpannel">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col md="4">
+        <c-card-group>
+          <!-- class="p-4" -->
+          <c-card >
+            <c-card-body>
+              <!-- cForm  (ngSubmit)="onSubmit()"-->
+              <form  [formGroup]="reactiveForm" >
+                <h1>Admin Login</h1>
+                <p class="text-medium-emphasis">Sign In to your account</p>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input autoComplete="email" name="email" placeholder="email" formControlName="email" />
+                  <br>
+      <div *ngIf="submitted && f['email'].errors">
+          <span style="color: red;" *ngIf="f['email'].errors?.['required'] ">Please enter name</span>
+      </div>
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input
+                    autoComplete="current-password"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    formControlName="password"
+                  />
+                  <br>
+                  <div *ngIf="submitted && f['password'].errors">
+                    <span style="color: red;" *ngIf="f['password'].errors?.['required'] ">Please enter Password</span>
+                    <span style="color: red;" *ngIf="f['password'].errors?.['minlength'] ">Password must be 6 letter</span>
+                </div>
+                </c-input-group>
+                <!-- routerLink="./dashboard" -->
+                <c-row>
+                  <!-- xs="12" -->
+                  <c-col >
+                    <button  class="px-4" cButton color="primary" (click)="onSubmit()">
+                      Login
+                    </button>
+                  </c-col>
+                  <!-- <c-col class="text-right" xs="6">
+                    <button cButton class="px-0" color="link">
+                      Forgot password?
+                    </button>
+                  </c-col> -->
+                </c-row>
+              </form>
+            </c-card-body>
+          </c-card>
+          <!-- <c-card [ngStyle]="{'width.%': 44}" class="text-white bg-primary py-5">
+            <c-card-body class="text-center">
+              <div>
+                <h2>Sign up</h2>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                  tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <button [active]="true" cButton class="mt-3" color="primary" routerLink="/register">
+                  Register Now! 
+                </button>
+              </div>
+            </c-card-body>
+          </c-card> -->
+        </c-card-group>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

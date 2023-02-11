@@ -1,0 +1,106 @@
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+            Users
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <button [cModalToggle]="verticallyCenteredModal.id" cButton class="float-end" color="primary" 
+          (click)="createBatches()" >
+           +Create User
+          </button>
+       </c-col>
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+        <table [striped]="true" cTable>
+            <thead>
+            <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Groups</th>
+            <th scope="col">Status</th>
+             <th scope="col">Action</th>
+        </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let list of data">
+            <td>{{list.firstName}}</td>
+            <td>{{list.lastName}}</td>
+            <td>{{list.email}}</td>
+            <td >{{list.group[0]}} , {{list.group[1]}}</td>
+            <td>{{list.status}}</td>
+            <td>
+                <button color="warning"  [cModalToggle]="verticallyCenteredModal.id" cButton (click)="edit(list)" >Edit</button>
+            <button cButton color="success">View</button>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+    </c-card-body>
+</c-card>
+
+
+
+<!-- Modal of Create New User -->
+
+
+<c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal">
+    <c-modal-header>
+      <h5 cModalTitle>Users</h5>
+      <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose></button>
+    </c-modal-header>
+
+    <c-modal-body>
+      <!-- (ngSubmit)="onSubmit()" -->
+      <form [formGroup]="form" >
+          <div class="mb-3">
+          <label cLabel for="exampleFormControlInput1">First Name</label>
+          <input cFormControl id="exampleFormControlInput1"
+                     placeholder="Batch Time "
+                     type="text"
+                     formControlName='firstName' />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="exampleFormControlLname">Last  Name</label>
+            <input cFormControl id="exampleFormControlLname"
+                       placeholder="Batch Time "
+                       type="text"
+                       formControlName='lastName' />
+            </div>
+          <div class="mb-3">
+            <label cLabel for="exampleFormControlEmail">Email</label>
+            <input cFormControl  id="exampleFormControlEmail"
+                       placeholder="Class "
+                       type="email"
+                       formControlName='email' />
+            </div>
+            <div class="mb-3">
+                <label cLabel for="exampleFormControlGroup">Group</label>
+                <input cFormControl
+                           id="exampleFormControlGroup"
+                           placeholder="Department "
+                           type="text"
+                           formControlName='group' />
+                </div>
+                <div class="mb-3">
+                    <label cLabel for="exampleFormControlStatus">Status</label>
+                    <input cFormControl
+                               id="exampleFormControlStatus"
+                               placeholder="Status "
+                               type="text"
+                               formControlName='status' />
+                    </div>
+                    
+                    <c-modal-footer>
+                      <button [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary">
+                        Close
+                      </button>
+                      <button [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary" (click)="saveNewData()" >Done</button>
+                    </c-modal-footer>
+          </form>
+    </c-modal-body>
+  </c-modal> 

@@ -1,0 +1,92 @@
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+           Result
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <!-- [cModalToggle]="verticallyCenteredModal.id" (click)="createBatches()"  -->
+          <!-- <button cButton class="float-end" color="primary" [cModalToggle]="verticallyCenteredModal.id"
+          (click)="resetForm()">
+            + Add New Set
+          </button> -->
+        </c-col>
+  
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+      <h3>Search</h3>
+      <form>
+  
+         <table borderless cTable hover>
+          <tbody>
+            <tr>
+             
+                <td>
+                    <input cFormControl id="inputPassword2"
+                      placeholder="Student name, Email " type="text" />
+                  </td>
+             
+              <td> <select cSelect class="form-control">
+                  <option [disabled]="true" [selected]="true">Set</option>
+                  <option value="">Math -x-TEST CHAPTER(1-4)</option>
+                  <option value="">TEST-1</option>
+                  <option value="">Try-test</option>
+                  <option value="">Biology-Test-3</option>
+                  <option value="">Physics Test</option>
+                </select>
+            </td>
+            
+            </tr>
+  
+            <tr>
+              <td><button cButton color="info">Search</button>
+                <button cButton color="light">Reset</button>
+              </td>
+              <td> </td>
+            </tr>
+          </tbody>
+        </table> 
+      </form>
+<!-- <br> -->
+
+<table [striped]="true" cTable>
+    <thead>
+    <tr>
+    <th scope="col">S.No.</th>
+    <th scope="col">Set No.</th>
+    <th scope="col">Student Name</th>
+    <th scope="col">Total Question</th>
+    <th scope="col">Solved Question</th>
+    <th scope="col">Right Question</th>
+    <th scope="col">Wrong Question</th>
+    <th scope="col">Skip Question</th>
+    <th scope="col">Marks</th>
+     <th scope="col">Date</th>
+</tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let list of data; let i=index">
+        <td>{{i+1}}</td>
+    <td>{{list.setNo}}</td>
+    <td>{{list.studentName}}</td>
+    <td>{{list.totalQuestion}}</td>
+    <td>{{list.solveQuestion}}</td>
+    <td>{{list.rightQuestion}}</td>
+     <td>{{list.wrongQuestion}}</td>
+     <td>{{list.skipQuestion}}</td>
+     <td>{{list.marks}}</td>
+     <td>{{list.date}}</td>
+    </tr>
+    </tbody>
+    </table>
+
+      </c-card-body>
+      </c-card>
+
+
+
+      <!-- modal -->
+

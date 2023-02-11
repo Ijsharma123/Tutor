@@ -1,0 +1,162 @@
+<c-card class="mb-4">
+    <c-card-header>
+      <c-row>
+        <c-col sm="5">
+          <h4 class="card-title mb-0" id="traffic">
+            Batch
+          </h4>
+        </c-col>
+        <c-col class="d-none d-md-block" sm="7">
+          <button [cModalToggle]="verticallyCenteredModal.id" cButton class="float-end" color="primary" 
+          (click)="createBatches()" >
+           +Create
+          </button>
+       </c-col>
+      </c-row>
+    </c-card-header>
+    <c-card-body>
+     
+  
+    
+      <table cTable>
+        <thead>
+        <tr>
+        <th scope="col">S.N.</th>
+        <th scope="col">Batch Time</th>
+        <th scope="col">Class</th>
+        <th scope="col">Board</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+    
+        <tr *ngFor="let datas of batchList; let i=index ">
+        <th scope="row"> {{i+1}} </th>
+        <td> {{datas.batch_start_time}}-{{datas.batch_end_time}} </td>
+        <td>{{datas.class_name}}</td>
+        <td>{{datas.board}}</td>
+        <!-- <td>{{datas.department}}</td> -->
+        <td>{{datas.status}}</td>
+        <td><button [cModalToggle]="verticallyCenteredModal.id" cButton (click)="edit(datas)">Edit</button> &nbsp;
+          <button cButton [cModalToggle]="delete.id" (click)="deleteModala(datas)"  >delete</button>
+        </td>
+        </tr>
+            <tr>
+        </tbody>
+        </table> 
+        <c-spinner class="spinner" *ngIf="loader " ></c-spinner>
+    </c-card-body>
+  </c-card>
+  
+  
+  
+  
+      <!-- <button [cModalToggle]="verticallyCenteredModal.id" cButton>Centered modal</button> -->
+  
+       <c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal" size="lg">
+        <c-modal-header>
+          <h5 cModalTitle>Edit Batches</h5>
+          <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose></button>
+        </c-modal-header>
+
+        <c-modal-body>
+          <!-- (ngSubmit)="onSubmit()" -->
+          <form [formGroup]="form" >
+            <table borderless cTable>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="mb-3">
+                      <label cLabel for="exampleFormControlInput1">Start Time</label><br>
+                      <input [ngxTimepicker]="picker" id="exampleFormControlInput1" formControlName='batchTime'  />
+        
+        <ngx-material-timepicker #picker class="picker" ></ngx-material-timepicker>  
+                      </div>
+                  </td>
+                  <td>
+                    <div class="mb-3">
+                      <label cLabel for="exampleFormControlInputEnd">End Time</label><br>
+                      <input [ngxTimepicker]="pickere" id="exampleFormControlInputEnd" formControlName='EndTime'  />
+        
+        <ngx-material-timepicker #pickere class="picker" ></ngx-material-timepicker> 
+                      </div>
+                  </td>
+                </tr>
+
+                <tr> 
+                  <td>
+                    <!-- (change)="onSelected()" -->
+                    <div class="mb-3">
+                      <label cLabel for="exampleFormControlclass">Class</label><br>
+                      <select cSelect id="exampleFormControlclass" class="form-control" formControlName='class'  >
+                        <option  [selected]="true">Select</option>
+                        <option  *ngFor="let classlist of classes" [value]="classlist._id"  >{{classlist.class_name}}</option>
+                      </select>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label cLabel for="exampleFormControlClass">Class</label><br>
+                      <input 
+                                 id="exampleFormControlClass"
+                                 placeholder="Class "
+                                 type="text"
+                                 formControlName='class' />
+                      </div> -->
+                  </td>
+                  <td>
+                      <div class="mb-3">
+                        <label cLabel for="exampleFormControlBoard">Board</label><br>
+                        <select cSelect id="exampleFormControlBoard" class="form-control" formControlName='board'>
+                          <option [disabled]="true" [selected]="true">Select Status</option>
+                          <option value="CBSE">CBSE</option>
+                          <option value="BSEB">Bihar Board</option>
+                        </select>
+                      </div>
+                  </td>
+                 
+              </tr>
+
+                <tr>
+                      <div class="mb-3">
+                        <label cLabel for="exampleFormControlStatus">Status</label><br>
+                        <select cSelect id="exampleFormControlStatus" class="form-control" formControlName='status'>
+                          <option [disabled]="true" [selected]="true">Select Status</option>
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      </div>
+                </tr>
+                </tbody>
+                </table>
+             
+                        <c-modal-footer>
+                          <button [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary">
+                            Close
+                          </button>
+                          <button  *ngIf="!isedit" [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary" (click)="createNewData()" >Done</button>
+                          <button [cModalToggle]="verticallyCenteredModal.id" cButton type="submit" color="primary"
+                          *ngIf="isedit" (click)="saveEditData()"  >Edit</button>
+                        </c-modal-footer>
+              </form>
+        </c-modal-body>
+      </c-modal> 
+
+
+       <!-- delete modal -->
+<c-modal #delete alignment="center" id="delete">
+  <c-modal-header>
+    <h5 cModalTitle>Delete!</h5>
+    <button [cModalToggle]="delete.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    Woohoo, you are Deleting this Set .
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="delete.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="delete1()" [cModalToggle]="delete.id">Delete</button>
+  </c-modal-footer>
+</c-modal>
+  

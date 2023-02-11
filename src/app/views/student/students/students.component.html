@@ -1,0 +1,440 @@
+<c-card class="mb-4">
+  <c-card-header>
+    <c-row>
+      <c-col sm="5">
+        <h4 class="card-title mb-0" id="traffic">
+          Student
+        </h4>
+      </c-col>
+      <c-col class="d-none d-md-block" sm="7">
+        <!-- [cModalToggle]="verticallyCenteredModal.id" (click)="createBatches()"  -->
+        <button cButton class="float-end" color="primary" [cModalToggle]="modalXl.id"
+        (click)="createModal()">
+          +Add new Student
+        </button>
+      </c-col>
+
+    </c-row>
+  </c-card-header>
+  <c-card-body>
+    <h3>Search</h3>
+    <form>
+
+       <table borderless cTable hover>
+        <tbody>
+          <tr>
+           
+            <td>
+              <input cFormControl id="inputPassword2"
+                placeholder="Student name, Email, Contact no and Guardian contact no." type="text" />
+            </td>
+            <td>
+              <select cSelect class="form-control">
+                <option [disabled]="true" [selected]="true">Batch time</option>
+                <option value="">5:00Am to 6:00Am</option>
+                <option value="">6:00Am to 7:00Am</option>
+                <option value="">7:00Am to 8:00Am</option>
+                <option value="">8:00Am to 9:00Am</option>
+                <option value="">10:00Am to 11:00Am</option>
+              </select>
+            </td>
+            <td> <select cSelect class="form-control">
+                <option [disabled]="true" [selected]="true">Admission For</option>
+                <option value="">6th</option>
+                <option value="">7th</option>
+                <option value="">8th</option>
+                <option value="">9th</option>
+                <option value="">10</option>
+              </select></td>
+            <td>
+              <select cSelect class="form-control">
+                <option [disabled]="true" [selected]="true">Select Session</option>
+                <option value="">2022-2023</option>
+                <option value="">2021-2022</option>
+                <option value="">2020-2021</option>
+                <option value="">2019-2020</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td><button cButton color="info">Search</button>
+              <button cButton color="light">Cancel</button>
+            </td>
+            <td> </td>
+          </tr>
+        </tbody>
+      </table> 
+   
+    </form>
+    <!-- <button cButton color="info" size="lg">+Add New Student</button> -->
+    <c-spinner class="spinner" *ngIf="loader " ></c-spinner>
+    <table [striped]="true" cTable>
+      <thead>
+        <tr>
+          <th scope="col">Sl.</th>
+          <th scope="col">Photo</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile Number</th>
+          <!-- <th scope="col">Chat</th> -->
+          <th scope="col">Gender </th>
+          <th scope="col">Session </th>
+          <th scope="col">Batch Timing </th>
+          <th scope="col">Class </th>
+          <th scope="col">Exam Seating </th>
+          <!-- <th scope="col">Department </th> -->
+          <th scope="col">Reg No </th>
+          <th scope="col">Received Fee </th>
+          <th scope="col">Payment Term </th>
+          <th scope="col">Status </th>
+          <th scope="col">Action </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of studentList; let i=index">
+          <th scope="row">{{i+1}}</th>
+          <td><img src="{{item?.student_photo}}" onerror="this.src='https://t3.ftcdn.net/jpg/03/34/83/22/360_F_334832255_IMxvzYRygjd20VlSaIAFZrQWjozQH6BQ.jpg'"  width="60" height="80" priority></td>
+          <td>{{item.name}}</td>
+          <td>{{item.mobile_number}}</td>
+          <!-- <td>{{item.chat}}</td> -->
+          <td>{{item.sex}}</td>
+          <td>{{item.session }}</td>
+          <td>{{item.select_batch_time }}</td>
+          <td>{{item.className}}</td>
+          <td>{{item.exam_seating }}</td>
+          <!-- <td>{{item.department }}</td> -->
+          <td>{{item.reg }}</td>
+          <td>{{item.fee_amount }}</td>
+          <td>{{item.payment_mode }}</td>
+          <td>{{item.status }}</td>
+          <td>
+            <button cButton color="warning" [cModalToggle]="modalXl.id" 
+            (click)="edit(item)" >Edit</button>
+            <button cButton color="success">View Detail</button>
+            <button cButton color="primary" (click)="deleteModal(item)" [cModalToggle]="delete.id">Delete</button>
+            <button cButton color="info" (click)="chatBox(item)">Chat Now</button>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </c-card-body>
+</c-card>
+
+
+
+
+
+<!-- Modal for Add New Student -->
+
+<c-modal #modalXl alignment="center" id="modalXl" size="lg">
+  <c-modal-header>
+    <h5 *ngIf="!isedit" cModalTitle>Add new Student Details</h5>
+    <h5 *ngIf="isedit" cModalTitle>Edit Student Details</h5>
+    <button (click)="resetForm()" [cModalToggle]="modalXl .id" cButtonClose></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <!--  -->
+    <form [formGroup]="formReactive" >
+      <table borderless cTable>
+        <tbody>
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlName">Name</label><br>
+                <input cFormControl id="exampleFormControlName" placeholder="Enter your Name " type="text" formControlName='name' />
+              </div>
+            </td>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlFatherName">Father's Name</label><br>
+                <input cFormControl id="exampleFormControlFatherName" placeholder=" " type="text" formControlName='fatherName' />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><div class="mb-3">
+              <label cLabel for="exampleFormControlMotherName">Mother's Name</label><br>
+              <input cFormControl id="exampleFormControlMotherName" placeholder=" " type="text" formControlName='motherName' />
+            </div></td>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlEmail">Email</label><br>
+                <input cFormControl id="exampleFormControlEmail" placeholder="Please enter Email Address" type="email" formControlName='email' />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlPassword">Password</label><br>
+                <input cFormControl id="exampleFormControlPassword" placeholder="Please enter Password " type="number" formControlName='password' />
+              </div>
+            </td>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlMobileNmae">Mobile Number</label><br>
+                <input cFormControl id="exampleFormControlMobileNmae" 
+                placeholder="Enter Your Mobile " type="number"
+                  formControlName='mobilename' />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlFatherContact">Contact Number (Father's)</label><br>
+                <input cFormControl id="exampleFormControlFatherContact" placeholder="Please enter Your Father's Mobile number " type="number" formControlName='fatherContact' />
+              </div>
+             
+            </td>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlDate">Date Of Birthday</label><br>
+                <input cFormControl id="exampleFormControlDate" placeholder="Please enter Date Of Birthday " type="date" formControlName='dateOfBirthday' />
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlGender">Gender</label><br>
+                <select  cSelect id="exampleFormControlGender" class="form-control" formControlName='gender'>
+                  <option [disabled]="true" [selected]="true">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+            </td>
+            <td>
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlSession">Session</label><br>
+                <input cFormControl id="exampleFormControlSession" placeholder="(eg. 2018-2019)" type="text" formControlName='session' />
+              </div> -->
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlSession">Session</label><br>
+                <select cSelect id="exampleFormControlSession" class="form-control" formControlName='session'>
+                  <option  [selected]="true">Select Session</option>
+                  <option  *ngFor="let sessionlst of sessionList" [value]="sessionlst._id">{{sessionlst.session}}</option>
+                </select>
+              </div>
+
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlAddress">Address</label><br>
+                <input cFormControl id="exampleFormControlAddress" placeholder="Please Enter Your Adress" type="text" formControlName='address' />
+              </div>
+            </td>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlPaymenrt">Payment Type*</label><br>
+                <select cSelect id="exampleFormControlPaymenrt" class="form-control" formControlName='paymentType'>
+                  <option [disabled]="true" [selected]="true">Select</option>
+                  <option value="online">Online</option>
+                  <option value="cash">Cash</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlClass">Class</label><br>
+                <input cFormControl id="exampleFormControlClass" placeholder="Enter Class " type="text" formControlName='class' />
+              </div> -->
+
+
+
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlClass">Class</label><br>
+                <select cSelect id="exampleFormControlClass" class="form-control" formControlName='class'>
+                  <option  [selected]="true">Select Class</option>
+                  <option  *ngFor="let class of classes" [value]="class._id">{{class.class_name}}</option>
+                </select>
+              </div>
+
+            </td>
+            <td>
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlBatchtime">Batch Timing</label><br>
+                <input cFormControl id="exampleFormControlBatchtime" placeholder="Enter Batch Time" type="text"
+                  formControlName='batchTime' />
+              </div> -->
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlBatchtime">Batch Timing</label><br>
+                <select cSelect id="exampleFormControlBatchtime" class="form-control" formControlName='batchTime'>
+                  <option [disabled]="true" [selected]="true">Select</option>
+                  <option  *ngFor="let list of batchList"  [value]="list._id"> {{list.batch_time}} </option>
+                </select>
+              </div>
+            </td>
+            
+          </tr>
+
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlRoll">Roll no</label><br>
+                <input cFormControl id="exampleFormControlRoll" placeholder="Please Enter Roll Number " type="number" formControlName='rollNo' />
+              </div>
+            </td>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlLogin">Login Code</label><br>
+                <input cFormControl id="exampleFormControlLogin" placeholder=" Please Enter Login Code" type="text" formControlName='loginCode' />
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlExamseat">Exam Seating</label><br>
+                <input cFormControl id="exampleFormControlExamseat" placeholder="Enter Exam Seating " type="text" formControlName='examSeating' />
+              </div> -->
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlExamseat">Exam Seating</label><br>
+                <select cSelect id="exampleFormControlExamseat" class="form-control" formControlName='examSeating'>
+                  <option [disabled]="true" [selected]="true">Select</option>
+                  <option value="first">First</option>
+                  <option value="second">Second</option>
+                </select>
+              </div>
+            </td>
+            <td>
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlDepartment">Department</label><br>
+                <input cFormControl id="exampleFormControlDepartment" placeholder="Enter Department " type="text"
+                  formControlName='department' />
+              </div> -->
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlStatus">Board</label><br>
+                <select cSelect id="exampleFormControlStatus" class="form-control" formControlName='bord'>
+                  <option [disabled]="true" [selected]="true">Select Bord</option>
+                  <option value="cbse">CBSE</option>
+                  <option value="bseb">Bihar Board</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlRecieve">Received Fee</label><br>
+                <input cFormControl id="exampleFormControlRecieve" placeholder="Please Enter Receiving Amount " type="number"
+                  formControlName='recieveFee' />
+              </div>
+            </td>
+            <td>
+              <!-- <div class="mb-3">
+                <label cLabel for="exampleFormControlPaymentTerm">Payment Term</label><br>
+                <input cFormControl id="exampleFormControlPaymentTerm" placeholder="Enter Payment Term " type="text"
+                  formControlName='paymentTerm' />
+              </div> -->
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlPaymentTerm">Payment Term</label><br>
+                <select cSelect id="exampleFormControlPaymentTerm" class="form-control" formControlName='paymentTerm'>
+                  <option [disabled]="true" [selected]="true">Select Mode</option>
+                  <option value="One Time Payment">One Time Payment</option>
+                  <option value="5 installment Payments">5 installment Payments</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlStatus">Status</label><br>
+                <select cSelect id="exampleFormControlStatus" class="form-control" formControlName='status'>
+                  <option [disabled]="true" [selected]="true">Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <c-modal-footer>
+        <button [cModalToggle]="modalXl.id" cButton color="secondary" (click)="resetForm()" >
+          Close
+        </button>
+        <!-- [cModalToggle]="modalXl.id" -->
+        <button  *ngIf="!isedit" [cModalToggle]="modalXl.id" (click)="onSubmit()"  cButton  color="primary">Done</button>
+        <button [cModalToggle]="modalXl.id" cButton type="submit" color="primary"
+        *ngIf="isedit" (click)="saveEditData()"  >Edit</button>
+      </c-modal-footer>
+    </form>
+  </c-modal-body>
+</c-modal>
+
+
+
+      <!-- delete modal -->
+      <c-modal #delete alignment="center" id="delete">
+        <c-modal-header>
+          <h5 cModalTitle>Delete!</h5>
+          <button [cModalToggle]="delete.id" cButtonClose></button>
+        </c-modal-header>
+        <c-modal-body>
+          Woohoo, you are Deleting this Set .
+        </c-modal-body>
+        <c-modal-footer>
+          <button [cModalToggle]="delete.id" cButton color="secondary">
+            Close
+          </button>
+          <button cButton color="primary" (click)="delete1()" [cModalToggle]="delete.id">Delete</button>
+        </c-modal-footer>
+      </c-modal>
+
+
+
+
+      <!-- <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav> -->
+
+      
+<!-- <div 
+  *ngFor="
+          let post of totalData
+            | paginate
+              : {
+                  itemsPerPage: tableSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+          let i = index
+        ">
+</div>
+
+
+      <div  class="d-flex justify-content-center">
+        <pagination-controls *ngIf="totalData.length >= 1"
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      </div> -->
